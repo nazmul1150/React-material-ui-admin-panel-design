@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from './Header/Navbar'
+import Sidebar from './Header/Sidebar'
+import Dashbord from './Body/Dashbord'
+import Post from './Body/Post'
+import Logout from './Body/Logout'
+import Notification from './Body/Notification'
+import Account from './Body/Account'
+import { useState } from "react";
+import { Box } from "@mui/material";
+import {bodyStyle} from "./Body/BodyStyle"
+import AddData from "./Body/AddData";
 
 function App() {
+  const classes = bodyStyle();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  const handleDrawerClose = () => {
+    setMobileOpen(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+      <Navbar handleDrawerToggle={handleDrawerToggle} />
+      <Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} handleDrawerClose={handleDrawerClose} />
+      <Box className={classes.wrapper}>
+        <Routes>
+          <Route end path="/" element={<Dashbord />} />
+          <Route path="/post" element={<Post />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/adddata" element={<AddData />} />
+        </Routes>
+      </Box>
+      </BrowserRouter>
+    </>
   );
 }
 
